@@ -22,10 +22,21 @@ spec:
           image: harbor.apps.c6.numerique-interieur.com/mi-certfr/app-java-forge-dso-demo:master
           imagePullPolicy: Always
           env:
-            - name: SPRING_DATASOURCE_USERNAME
-              value: "userdemomanifest"
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: "My$ecrETPAss0rd*"
+            - name: "SPRING_DATASOURCE_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: "SPRING_DATASOURCE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRESQL_DATABASE
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://postgres-manifest:5432/demo
           resources:

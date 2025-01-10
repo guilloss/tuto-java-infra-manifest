@@ -47,9 +47,15 @@ spec:
             - containerPort: 5432  # Exposes container port
           env:
             - name: "POSTGRES_USER"
-              value: "userdemomanifest"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
             - name: "POSTGRES_PASSWORD"
-              value: "My$ecrETPAss0rd*"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
             - name: POSTGRESQL_DATABASE
               value: "demo"
           volumeMounts:
